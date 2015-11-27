@@ -1,0 +1,24 @@
+{
+  "name": "gulp-webpack-react",
+  "version": "1.0.0",
+  "description": "gulp-webpack-react,gulp-livereload,webpack-react",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zonybir/gulp-webpack-react.git"
+  },
+  "keywords": [
+    "gulp-webpack-react",
+    "gulp-livereload",
+    "webpack-react"
+  ],
+  "author": "zonybir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zonybir/gulp-webpack-react/issues"
+  },
+  "homepage": "https://github.com/zonybir/gulp-webpack-react#readme"
+}
