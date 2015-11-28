@@ -4,7 +4,8 @@
   "description": "gulp-webpack-react,gulp-livereload,webpack-react",
   "main": "app.js",
   "scripts": {
-    "test": "npm install"
+    "test": "npm install",
+    "runInstall":"install gulp gulp-util webpack react react-dom style-loader css-loader less-loader jsx-loader express mysql --sava-dev"
   },
   "repository": {
     "type": "git",
