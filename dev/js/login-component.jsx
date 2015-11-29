@@ -1,4 +1,5 @@
 var React = require ('react');
+var ajax = require ('./ajax.js');
 module.exports=React.createClass({
 	getInitialState:function(){
 		return {
@@ -6,7 +7,7 @@ module.exports=React.createClass({
 			signIn:true,
 			showErr:false,
 			err_info:'',
-			b:[1,2,3,4,5,6,7,8,9]
+			b:''
 		};
 	},
 	date:{
@@ -16,24 +17,23 @@ module.exports=React.createClass({
 		this.date.userName=e.target.value;		
 	},
 	handleNextStep:function(){
-		if(!this.date.userName) this.setState({showErr:true,err_info:'Please press zonybir to login in' });
-		else if(this.checkuserNmae()) {
-			this.render=this.pwd;
+		var t=this;
+		if(!this.date.userName) this.setState({showErr:true,err_info:'Please entry your name.' });
+		else {
+			ajax.GET('user/name/'+t.date.userName+'?date='+new Date(),function(result){
+				if(result.statu == '1') {
+					t.setState({showErr:false,err_info:'',b:true});
+					t.render=t.pwd;
+					return;
+				}else{
+					t.setState({showErr:true,err_info:result['info']})
+				}
+			});
 		}
 	},
-	handSignUp:function(e){
-		
+	handSignUp:function(e){		
 		this.setState({showErr:false});
 		return this.state.signIn?this.setState({signIn:false}):this.setState({signIn:true});
-	},
-	checkuserNmae:function(){
-		if(this.date.userName == 'zonybir') {
-			this.setState({showErr:false,err_info:''})
-			return true;
-		}else{
-			this.setState({showErr:true,err_info:'Please check your input name !'})
-			return false;
-		}
 	},
 	passwordKey:{
 		key:[],
@@ -58,7 +58,6 @@ module.exports=React.createClass({
 		
 		if(this.passwordKey.hasKey(e.target.getAttribute('value'))) return;
 		else {
-			console.log(1111);
 			this.lineDate.startPoint={
 				x:e.pageX,
 				y:e.pageY
@@ -113,15 +112,22 @@ module.exports=React.createClass({
 		this.lineDate.context.stroke();
 
 		//模拟 ajax 验证密码
-		var t=this;
-		setTimeout(function(){
-			t.passwordKey.endStatus=true;
-			t.lineDate.context.closePath();
-			t.lineDate.context.clearRect(0,0,300,300);
-			t.passwordKey.key=[];
-			t.lineDate.path=[];
-			alert('密码错误！！请重新输入');
-		},3000);
+		var t=this,data={};
+		console.log(t.passwordKey.key.toString().replace(',',''));
+		data="pwd="+t.passwordKey.key.toString().replace(/\,/g,'');
+		console.log(data);
+		ajax.POST('user/name?data='+new Date(),data,function(result){
+			if(result.statu == '1'){
+				alert(result.info);
+			}else{
+				alert(result.info);
+				t.passwordKey.endStatus=true;
+				t.lineDate.context.closePath();
+				t.lineDate.context.clearRect(0,0,300,300);
+				t.passwordKey.key=[];
+				t.lineDate.path=[];
+			}
+		})
 	},
 	lineDate:{
 		context:'',
@@ -160,11 +166,11 @@ module.exports=React.createClass({
 	},
 	render:function(){
 		var display = this.state.showErr ? 'show' : 'hide',
-		 rule={};
+		rule={};
 		rule= this.state.signIn?{placeholder:'please input zony',title:'without',signAs:'sign up',btn_text:'Next'}:{placeholder:'sign up name',title:'hava a',signAs:'sign in',btn_text:'Sign Up'};
 		return (
 			<div className='login-box'>
-				<input onChange = {this.handleInput} placeholder={rule.placeholder}/>
+				<input onChange = {this.handleInput} onBlur={this.handleNextStep} placeholder={rule.placeholder}/>
 				<button onClick={this.handleNextStep}>{rule.btn_text}</button>
 				<div ><span className={display}>{this.state.err_info}</span></div>
 				<p><span>{rule.title} account ?</span><span onClick={this.handSignUp} className='sign-sa'>{rule.signAs}</span></p>
@@ -182,7 +188,7 @@ module.exports=React.createClass({
 		return(
 			<div className='login-box pwd-box' onMouseUp={this.handleResetPwd} onMouseMove={this.handleDrawLine} onMouseLeave={this.handleResetPwd}>
 				{key.map(function(value,index,arry){
-					return <span className='prohibitSelect' onMouseEnter={t.handlePwdNext} onMouseDown={t.handlePwdStart} value={value}></span>
+					return <span className='prohibitSelect' key={value} onMouseEnter={t.handlePwdNext} onMouseDown={t.handlePwdStart} value={value}></span>
 				})}
 				<canvas  id='pwdLine' width='300px' height='300px'>your mus update your brower wo continue use.</canvas>
 			</div>

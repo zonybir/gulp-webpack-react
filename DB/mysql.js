@@ -1,5 +1,5 @@
 var mysql = require ('mysql'),
-    dbconf=require ('../config/mysql-config.js'),
+    dataconf=require ('../config/mysql-config.js'),
 
     pool = mysql.createPool({
 		host : dataconf.host,
@@ -26,21 +26,7 @@ exports.query = function (sql,callback,inser){
 						callback("执行sql语句错误！");
 					}
 				}else if (result){
-					if (callback){
-						//console.log(result.length)
-						if (inser == 1){//   BUG 1  当打印内容被清空后  throw ERR   服务器中断 也就是index为null时
-						if (result[0].index){
-							for (var i=0;i<result.length-1;i++){
-								for (var j=i+1;j<result.length;j++){
-									if (result[i].index > result[j].index){
-										var t = result[i];
-										result[i]=result[j];
-										result[j]=t;
-									}
-								}
-							}
-						}
-						}						
+					if (callback){						
 						callback(err,result);
 						console.log('返回result成功！');
 					}					
