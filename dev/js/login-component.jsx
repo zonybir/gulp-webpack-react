@@ -22,18 +22,24 @@ module.exports=React.createClass({
 		else {
 			ajax.GET('user/name/'+t.date.userName+'?date='+new Date(),function(result){
 				if(result.statu == '1') {
-					t.setState({showErr:false,err_info:'',b:true});
-					t.render=t.pwd;
-					return;
+					if(!t.state.signIn){
+						t.setState({showErr:true,err_info:'用户名已存在！'});
+					}else{
+						t.setState({showErr:false,err_info:'',b:true});
+						t.render=t.pwd;
+					}
 				}else{
-					t.setState({showErr:true,err_info:result['info']})
+					if(!t.state.signIn){
+						t.setState({showErr:false,err_info:''});
+						t.render=t.pwd;
+					}else t.setState({showErr:true,err_info:result['info']})
 				}
 			});
 		}
 	},
 	handSignUp:function(e){		
 		this.setState({showErr:false});
-		return this.state.signIn?this.setState({signIn:false}):this.setState({signIn:true});
+		this.state.signIn?this.setState({signIn:false}):this.setState({signIn:true});
 	},
 	passwordKey:{
 		key:[],
