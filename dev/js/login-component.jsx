@@ -40,6 +40,7 @@ module.exports=React.createClass({
 	handSignUp:function(e){		
 		this.setState({showErr:false});
 		this.state.signIn?this.setState({signIn:false}):this.setState({signIn:true});
+		document.getElementById('name_input').value='';
 	},
 	passwordKey:{
 		key:[],
@@ -80,7 +81,6 @@ module.exports=React.createClass({
 			this.lineDate.path.push(this.lineDate.canvasPoint);
 			
 		}
-		//console.log(this.passwordKey.key);
 		
 	},
 	handlePwdStart:function(e){
@@ -104,7 +104,6 @@ module.exports=React.createClass({
 		};
 		this.lineDate.path.push(this.lineDate.canvasPoint);
 		this.lineDate.context.moveTo(x,y);
-		//console.log(e.pageX+'---'+e.pageY);
 		
 	},
 	handleResetPwd:function(){
@@ -119,12 +118,14 @@ module.exports=React.createClass({
 
 		//模拟 ajax 验证密码
 		var t=this,data={};
-		console.log(t.passwordKey.key.toString().replace(',',''));
 		data="pwd="+t.passwordKey.key.toString().replace(/\,/g,'');
-		console.log(data);
-		ajax.POST('user/name?data='+new Date(),data,function(result){
+		if(!this.state.signIn){
+			ajax.POST('user/adduser?data='+new Date(),data,function(result){
+				window.location='index.html';
+			})
+		}else ajax.POST('user/name?data='+new Date(),data,function(result){
 			if(result.statu == '1'){
-				alert(result.info);
+				window.location='index.html';
 			}else{
 				alert(result.info);
 				t.passwordKey.endStatus=true;
@@ -176,7 +177,7 @@ module.exports=React.createClass({
 		rule= this.state.signIn?{placeholder:'please input zony',title:'without',signAs:'sign up',btn_text:'Next'}:{placeholder:'sign up name',title:'hava a',signAs:'sign in',btn_text:'Sign Up'};
 		return (
 			<div className='login-box'>
-				<input onChange = {this.handleInput} onBlur={this.handleNextStep} placeholder={rule.placeholder}/>
+				<input id='name_input' onChange = {this.handleInput} onBlur={this.handleNextStep} placeholder={rule.placeholder}/>
 				<button onClick={this.handleNextStep}>{rule.btn_text}</button>
 				<div ><span className={display}>{this.state.err_info}</span></div>
 				<p><span>{rule.title} account ?</span><span onClick={this.handSignUp} className='sign-sa'>{rule.signAs}</span></p>

@@ -19693,6 +19693,7 @@
 		handSignUp:function(e){		
 			this.setState({showErr:false});
 			this.state.signIn?this.setState({signIn:false}):this.setState({signIn:true});
+			document.getElementById('name_input').value='';
 		},
 		passwordKey:{
 			key:[],
@@ -19733,7 +19734,6 @@
 				this.lineDate.path.push(this.lineDate.canvasPoint);
 				
 			}
-			//console.log(this.passwordKey.key);
 			
 		},
 		handlePwdStart:function(e){
@@ -19757,7 +19757,6 @@
 			};
 			this.lineDate.path.push(this.lineDate.canvasPoint);
 			this.lineDate.context.moveTo(x,y);
-			//console.log(e.pageX+'---'+e.pageY);
 			
 		},
 		handleResetPwd:function(){
@@ -19772,12 +19771,14 @@
 
 			//模拟 ajax 验证密码
 			var t=this,data={};
-			console.log(t.passwordKey.key.toString().replace(',',''));
 			data="pwd="+t.passwordKey.key.toString().replace(/\,/g,'');
-			console.log(data);
-			ajax.POST('user/name?data='+new Date(),data,function(result){
+			if(!this.state.signIn){
+				ajax.POST('user/adduser?data='+new Date(),data,function(result){
+					window.location='index.html';
+				})
+			}else ajax.POST('user/name?data='+new Date(),data,function(result){
 				if(result.statu == '1'){
-					alert(result.info);
+					window.location='index.html';
 				}else{
 					alert(result.info);
 					t.passwordKey.endStatus=true;
@@ -19829,7 +19830,7 @@
 			rule= this.state.signIn?{placeholder:'please input zony',title:'without',signAs:'sign up',btn_text:'Next'}:{placeholder:'sign up name',title:'hava a',signAs:'sign in',btn_text:'Sign Up'};
 			return (
 				React.createElement("div", {className: "login-box"}, 
-					React.createElement("input", {onChange: this.handleInput, onBlur: this.handleNextStep, placeholder: rule.placeholder}), 
+					React.createElement("input", {id: "name_input", onChange: this.handleInput, onBlur: this.handleNextStep, placeholder: rule.placeholder}), 
 					React.createElement("button", {onClick: this.handleNextStep}, rule.btn_text), 
 					React.createElement("div", null, React.createElement("span", {className: display}, this.state.err_info)), 
 					React.createElement("p", null, React.createElement("span", null, rule.title, " account ?"), React.createElement("span", {onClick: this.handSignUp, className: "sign-sa"}, rule.signAs))

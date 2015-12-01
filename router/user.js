@@ -4,7 +4,6 @@ var router = express.Router();
 router.setApp=function(app_){app=app_;}
 var querystring=require('querystring');
 var mysql = require ('../DB/mysql.js');
-//var checklogin=require('../mysql/mysql_main.js');
 var querystring=require('querystring');
 router.all('*',function(req,res,next){
 	//res.send('zhegeshishenma?')
@@ -26,12 +25,10 @@ var setCookie=function(req,res,name){
 };
 router.get('/name/:name',function(req,res,next){
 	var name=req.params.name;
+	if (name) setCookie(req,res,name);
+	else res.send('非法访问');
 	mysql.query("select name from user where name='"+name+"'",function(err,result){
-		//result=eval(result);
-		//console.log(result[0].name);
 		if(result[0]&&result[0].name) {
-			console.log('----------->'+req.cookies);
-			setCookie(req,res,name);
 			res.send({info:'用户名存在',statu:1})
 
 		}
@@ -41,8 +38,6 @@ router.get('/name/:name',function(req,res,next){
 router.post('/name',function(req,res,next){
 	var name=req.cookies.name;
 	if(name){
-		//var pwd=req.body.pwd;
-	//console.log(pwd);
 		req.addListener('data',function(data){
 			zdata=data.toString();
 			var requestPost=querystring.parse(zdata);
@@ -58,5 +53,23 @@ router.post('/name',function(req,res,next){
 		res.send({statu:0})
 	}
 })
-
+router.post('/adduser',function(req,res,next){
+	var name=req.cookies.name;
+	if(name){
+		req.addListener('data',function(data){
+			zdata=data.toString();
+			var requestPost=querystring.parse(zdata);
+			var sql ="insert into user (name,password) values('"+name+"','"+requestPost.pwd+"')" ;
+			mysql.query(sql,function(err,result){
+				if(result.affectedRows == '1'){
+					res.send({info:'注册成功登陆成功',statu:1});
+				}
+				//console.log('----insert---->'+result.affectedRows+'-----'+result.insertId);
+				else res.send({statu:0})
+			})
+		});
+	}else{
+		res.send({statu:0})
+	}
+})
 module.exports=router;
