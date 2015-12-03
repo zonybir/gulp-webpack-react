@@ -84,6 +84,8 @@ module.exports=React.createClass({
 		
 	},
 	handlePwdStart:function(e){
+		e.cancelable=true;
+		e.preventDefault();
 		if (this.passwordKey.endStatus) this.passwordKey.endStatus=false;
 		else return;
 		this.canvasInit();
@@ -195,7 +197,7 @@ module.exports=React.createClass({
 		return(
 			<div className='login-box pwd-box' onMouseUp={this.handleResetPwd} onMouseMove={this.handleDrawLine} onMouseLeave={this.handleResetPwd}>
 				{key.map(function(value,index,arry){
-					return <span className='prohibitSelect' key={value} onMouseEnter={t.handlePwdNext} onMouseDown={t.handlePwdStart} value={value}></span>
+					return <span className='prohibitSelect' key={value} onMouseEnter={t.handlePwdNext} onMouseDown={t.handlePwdStart} onTouchStart={t.handlePwdStart} value={value}></span>
 				})}
 				<canvas  id='pwdLine' width='300px' height='300px'>your mus update your brower wo continue use.</canvas>
 			</div>

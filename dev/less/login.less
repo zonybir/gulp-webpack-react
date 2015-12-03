@@ -17,12 +17,14 @@ html,body{
 	position:relative;
 	top:50%;
 	margin-top:-150px;
+	box-sizing:border-box;
 }
 .login-box{
 	font-size:14px;
 	input{
 		padding:8px 5px;
 		width:70%;
+		box-sizing:border-box;
 	}
 	button{
 		width:20%;
@@ -81,5 +83,26 @@ html,body{
 		top:0;
 		left:0;
 		z-index:0;
+	}
+}
+@media (max-width:475px){
+	.login-box{
+		padding:0 40px;
+		input{
+			width:100%;
+		}
+		button{
+			width:100%;
+			margin-top:15px;
+			margin-left:0;
+			padding:8px 5px;
+		}
+		div{
+			padding: 5px 0;
+		}
+	}
+	.pwd-box{
+		padding:0;
+		margin:0 auto;
 	}
 }

@@ -19737,6 +19737,8 @@
 			
 		},
 		handlePwdStart:function(e){
+			e.cancelable=true;
+			e.preventDefault();
 			if (this.passwordKey.endStatus) this.passwordKey.endStatus=false;
 			else return;
 			this.canvasInit();
@@ -19848,7 +19850,7 @@
 			return(
 				React.createElement("div", {className: "login-box pwd-box", onMouseUp: this.handleResetPwd, onMouseMove: this.handleDrawLine, onMouseLeave: this.handleResetPwd}, 
 					key.map(function(value,index,arry){
-						return React.createElement("span", {className: "prohibitSelect", key: value, onMouseEnter: t.handlePwdNext, onMouseDown: t.handlePwdStart, value: value})
+						return React.createElement("span", {className: "prohibitSelect", key: value, onMouseEnter: t.handlePwdNext, onMouseDown: t.handlePwdStart, onTouchStart: t.handlePwdStart, value: value})
 					}), 
 					React.createElement("canvas", {id: "pwdLine", width: "300px", height: "300px"}, "your mus update your brower wo continue use.")
 				)
@@ -20299,7 +20301,7 @@
 
 
 	// module
-	exports.push([module.id, "html,\nbody {\n  width: 100%;\n  height: 100%;\n}\n#login-box {\n  width: 100%;\n  height: 100%;\n  text-align: center;\n  overflow: hidden;\n}\n.center-box {\n  width: 100%;\n  max-width: 400px;\n  margin: 0 auto;\n  height: 300px;\n  position: relative;\n  top: 50%;\n  margin-top: -150px;\n}\n.login-box {\n  font-size: 14px;\n}\n.login-box input {\n  padding: 8px 5px;\n  width: 70%;\n}\n.login-box button {\n  width: 20%;\n  margin-left: 5%;\n  padding: 8px 5px;\n}\n.login-box div {\n  text-align: left;\n  color: #fff;\n  padding: 3px;\n  height: 27px;\n}\n.login-box div span {\n  display: inline-block;\n  padding: 3px 10px;\n  background-color: rgba(23, 23, 23, 0.5);\n}\n.login-box p {\n  text-align: right;\n}\n.login-box p .sign-sa {\n  cursor: pointer;\n  padding-left: 5px;\n  color: #1262F4;\n  display: inline-block;\n  width: 50px;\n}\n.pwd-box {\n  width: 300px;\n  height: 300px;\n  position: relative;\n}\n.pwd-box span {\n  color: #000;\n  display: inline-block;\n  width: 60px;\n  height: 60px;\n  text-align: center;\n  box-sizing: border-box;\n  background-color: rgba(118, 118, 118, 0.7);\n  border-radius: 50%;\n  cursor: pointer;\n  position: relative;\n  z-index: 2;\n}\n.pwd-box span:nth-child(3n+2) {\n  margin: 0 60px;\n}\n.pwd-box span:nth-child(n+4) {\n  margin-top: 60px;\n}\n.pwd-box canvas {\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 0;\n}\n", ""]);
+	exports.push([module.id, "html,\nbody {\n  width: 100%;\n  height: 100%;\n}\n#login-box {\n  width: 100%;\n  height: 100%;\n  text-align: center;\n  overflow: hidden;\n}\n.center-box {\n  width: 100%;\n  max-width: 400px;\n  margin: 0 auto;\n  height: 300px;\n  position: relative;\n  top: 50%;\n  margin-top: -150px;\n  box-sizing: border-box;\n}\n.login-box {\n  font-size: 14px;\n}\n.login-box input {\n  padding: 8px 5px;\n  width: 70%;\n  box-sizing: border-box;\n}\n.login-box button {\n  width: 20%;\n  margin-left: 5%;\n  padding: 8px 5px;\n}\n.login-box div {\n  text-align: left;\n  color: #fff;\n  padding: 3px;\n  height: 27px;\n}\n.login-box div span {\n  display: inline-block;\n  padding: 3px 10px;\n  background-color: rgba(23, 23, 23, 0.5);\n}\n.login-box p {\n  text-align: right;\n}\n.login-box p .sign-sa {\n  cursor: pointer;\n  padding-left: 5px;\n  color: #1262F4;\n  display: inline-block;\n  width: 50px;\n}\n.pwd-box {\n  width: 300px;\n  height: 300px;\n  position: relative;\n}\n.pwd-box span {\n  color: #000;\n  display: inline-block;\n  width: 60px;\n  height: 60px;\n  text-align: center;\n  box-sizing: border-box;\n  background-color: rgba(118, 118, 118, 0.7);\n  border-radius: 50%;\n  cursor: pointer;\n  position: relative;\n  z-index: 2;\n}\n.pwd-box span:nth-child(3n+2) {\n  margin: 0 60px;\n}\n.pwd-box span:nth-child(n+4) {\n  margin-top: 60px;\n}\n.pwd-box canvas {\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 0;\n}\n@media (max-width: 475px) {\n  .login-box {\n    padding: 0 40px;\n  }\n  .login-box input {\n    width: 100%;\n  }\n  .login-box button {\n    width: 100%;\n    margin-top: 15px;\n    margin-left: 0;\n    padding: 8px 5px;\n  }\n  .login-box div {\n    padding: 5px 0;\n  }\n  .pwd-box {\n    padding: 0;\n    margin: 0 auto;\n  }\n}\n", ""]);
 
 	// exports
 

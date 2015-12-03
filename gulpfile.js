@@ -31,6 +31,6 @@ gulp.task('webpack',function(){
 	})
 })
 gulp.task('start',function(){
-	gulp.watch('dev/js/*.*',['webpack'])
+	gulp.watch('dev/**/*.*',['webpack'])
 })
 gulp.task('default', ['start']);
